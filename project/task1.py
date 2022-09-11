@@ -1,58 +1,54 @@
 from pathlib import Path
-from typing import Set, Tuple
+from typing import Set
+from typing import Tuple
 
 import cfpq_data
-from networkx import Graph, MultiDiGraph
-from networkx.drawing.nx_pydot import to_pydot
+import networkx as nx
 
 __all__ = [
     "GraphData",
     "get_graph_data",
+    "to_graph_data",
     "write_labeled_two_cycles_graph_to_dot",
 ]
 
 
 class GraphData:
-    """Graph data including number of node, number of edges, and set of
-    labels"""
-
     node_count: int
     edge_count: int
+    edge_labels: Set[str]
 
-    labels: Set[str]
-    """The set of values of the "label" attribute of graph edges"""
-
-    def __init__(self, node_count: int, edge_count: int, labels: Set[str]):
+    def __init__(self, node_count: int, edge_count: int, edge_labels: Set[str]):
         self.node_count = node_count
         self.edge_count = edge_count
-        self.labels = labels
+        self.edge_labels = edge_labels
 
     def __eq__(self, other):
         return (
             isinstance(other, GraphData)
             and self.node_count == other.node_count
             and self.edge_count == other.edge_count
-            and self.labels == other.labels
+            and self.edge_labels == other.edge_labels
         )
 
     def __repr__(self):
         return (
             f"GraphData(node_count={self.node_count}, "
             f"edge_count={self.edge_count}, "
-            f"labels={self.labels})"
+            f"edge_labels={self.edge_labels})"
         )
 
 
 def get_graph_data(graph_name: str) -> GraphData:
-    return _to_graph_data(_get_graph(graph_name))
+    return to_graph_data(_get_graph(graph_name))
 
 
-def _get_graph(graph_name: str) -> MultiDiGraph:
+def _get_graph(graph_name: str) -> nx.MultiDiGraph:
     graph_path = cfpq_data.download(graph_name)
     return cfpq_data.graph_from_csv(graph_path)
 
 
-def _to_graph_data(graph: Graph) -> GraphData:
+def to_graph_data(graph: nx.Graph) -> GraphData:
     return GraphData(
         graph.number_of_nodes(),
         graph.number_of_edges(),
@@ -61,22 +57,19 @@ def _to_graph_data(graph: Graph) -> GraphData:
 
 
 def write_labeled_two_cycles_graph_to_dot(
-    cycle_sizes: Tuple[int, int], labels: Tuple[str, str], path: Path
+    cycle_sizes_without_common_node: Tuple[int, int],
+    labels: Tuple[str, str],
+    path: Path,
 ):
-    """
-    Writes a graph with two cycles connected by one node two a dot file
-
-    :param cycle_sizes: The number of nodes in cycles without a common node
-    :param labels: Labels that will be used to mark the edges of the graph
-    :param path: Filepath to write graph to
-    """
     graph = cfpq_data.labeled_two_cycles_graph(
-        n=cycle_sizes[0], m=cycle_sizes[1], labels=labels
+        n=cycle_sizes_without_common_node[0],
+        m=cycle_sizes_without_common_node[1],
+        labels=labels,
     )
     _write_graph_to_dot(graph, path)
 
 
-def _write_graph_to_dot(graph: Graph, path: Path):
+def _write_graph_to_dot(graph: nx.Graph, path: Path):
     with open(path, "w") as file:
         # removing "\n"-s because otherwise `read_dot` creates node called "\n"
-        file.write(to_pydot(graph).to_string().replace("\n", ""))
+        file.write(nx.drawing.nx_pydot.to_pydot(graph).to_string().replace("\n", ""))

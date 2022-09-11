@@ -100,9 +100,7 @@ def test_write_labeled_two_cycles_graph_to_dot_with_positive_cycle_sizes(tmp_pat
     write_labeled_two_cycles_graph_to_dot((1, 2), ("A", "B"), path_to_actual)
     actual_graph = nx.DiGraph(nx.drawing.nx_pydot.read_dot(path_to_actual))
     assert nx.is_isomorphic(
-        actual_graph,
-        expected_graph,
-        edge_match=lambda e1, e2: e1["label"] == e2["label"],
+        actual_graph, expected_graph, edge_match=dict.__eq__, node_match=dict.__eq__
     )
 
 

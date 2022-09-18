@@ -1,4 +1,5 @@
 import networkx as nx
+import pydot
 import pytest
 
 from project.task1 import GraphData
@@ -7,71 +8,13 @@ from project.task1 import to_graph_data
 from project.task1 import write_labeled_two_cycles_graph_to_dot
 
 
-def test_get_graph_data_on_wc_graph():
-    graph_name = "wc"
+def test_get_graph_data(config_data):
     expected_graph_data = GraphData(
-        node_count=332, edge_count=269, edge_labels={"A", "D"}
+        node_count=int(config_data["expected-node-count"]),
+        edge_count=int(config_data["expected-edge-count"]),
+        edge_labels=set(config_data["expected-edge-labels"]),
     )
-    actual_graph_data = get_graph_data(graph_name)
-    assert actual_graph_data == expected_graph_data
-
-
-def test_get_graph_data_on_go_graph():
-    graph_name = "go"
-    expected_graph_data = GraphData(
-        node_count=582929,
-        edge_count=1437437,
-        edge_labels={
-            "type",
-            "hasDbXref",
-            "annotatedTarget",
-            "annotatedSource",
-            "annotatedProperty",
-            "subClassOf",
-            "hasExactSynonym",
-            "label",
-            "hasOBONamespace",
-            "id",
-            "IAO_0000115",
-            "someValuesFrom",
-            "onProperty",
-            "rest",
-            "first",
-            "hasNarrowSynonym",
-            "creation_date",
-            "created_by",
-            "hasRelatedSynonym",
-            "equivalentClass",
-            "intersectionOf",
-            "comment",
-            "deprecated",
-            "hasBroadSynonym",
-            "IAO_0100001",
-            "hasAlternativeId",
-            "IAO_0000231",
-            "inSubset",
-            "consider",
-            "hasSynonymType",
-            "disjointWith",
-            "subPropertyOf",
-            "shorthand",
-            "propertyChainAxiom",
-            "inverseOf",
-            "hasScope",
-            "SynonymTypeProperty",
-            "IAO_0000589",
-            "hasOBOFormatVersion",
-            "default-namespace",
-            "license",
-            "versionIRI",
-            "creator",
-            "date",
-            "IAO_0000425",
-            "is_metadata_tag",
-            "is_class_level",
-        },
-    )
-    actual_graph_data = get_graph_data(graph_name)
+    actual_graph_data = get_graph_data(config_data["graph-name"])
     assert actual_graph_data == expected_graph_data
 
 
@@ -86,18 +29,14 @@ def test_to_graph_data_on_empty_graph():
     assert expected_graph_data == actual_graph_data
 
 
-def test_write_labeled_two_cycles_graph_to_dot_with_positive_cycle_sizes(tmp_path):
-    expected_graph = nx.DiGraph(
-        [
-            (0, 1, dict(label="A")),
-            (1, 0, dict(label="A")),
-            (0, 2, dict(label="B")),
-            (2, 3, dict(label="B")),
-            (3, 0, dict(label="B")),
-        ]
+def test_write_labeled_two_cycles_graph_to_dot(config_data, tmp_path):
+    expected_graph = nx.nx_pydot.from_pydot(
+        pydot.graph_from_dot_data(config_data["expected-graph"])[0]
     )
     path_to_actual = tmp_path / "actual_graph.dot"
-    write_labeled_two_cycles_graph_to_dot((1, 2), ("A", "B"), path_to_actual)
+    write_labeled_two_cycles_graph_to_dot(
+        config_data["cycle-sizes"], config_data["labels"], path_to_actual
+    )
     actual_graph = nx.DiGraph(nx.drawing.nx_pydot.read_dot(path_to_actual))
     assert nx.is_isomorphic(
         actual_graph, expected_graph, edge_match=dict.__eq__, node_match=dict.__eq__

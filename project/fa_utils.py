@@ -7,7 +7,9 @@ from pyformlang.finite_automaton import State
 from pyformlang.finite_automaton import Symbol
 from pyformlang.regular_expression import Regex
 
-__all__ = ["graph_to_nfa", "regex_to_minimal_dfa"]
+__all__ = ["graph_to_nfa", "regex_to_minimal_dfa", "intersect_nfas"]
+
+from project.bool_decomposed_nfa import BoolDecomposedNFA
 
 
 def regex_to_minimal_dfa(regex_str: str) -> DFA:
@@ -36,3 +38,11 @@ def graph_to_nfa(
             State(target),
         )
     return nfa
+
+
+def intersect_nfas(nfa1: NFA, nfa2: NFA) -> NFA:
+    return (
+        BoolDecomposedNFA.from_nfa(nfa1)
+        .intersect(BoolDecomposedNFA.from_nfa(nfa2))
+        .to_nfa()
+    )

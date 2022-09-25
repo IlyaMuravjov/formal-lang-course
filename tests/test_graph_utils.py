@@ -1,11 +1,11 @@
 import networkx as nx
-import pydot
 import pytest
 
-from project.task1 import GraphData
-from project.task1 import get_graph_data
-from project.task1 import to_graph_data
-from project.task1 import write_labeled_two_cycles_graph_to_dot
+from project.graph_utils import GraphData
+from project.graph_utils import get_graph_data
+from project.graph_utils import to_graph_data
+from project.graph_utils import write_labeled_two_cycles_graph_to_dot
+from tests.utils import read_graph
 
 
 def test_get_graph_data(config_data):
@@ -30,9 +30,7 @@ def test_to_graph_data_on_empty_graph():
 
 
 def test_write_labeled_two_cycles_graph_to_dot(config_data, tmp_path):
-    expected_graph = nx.nx_pydot.from_pydot(
-        pydot.graph_from_dot_data(config_data["expected-graph"])[0]
-    )
+    expected_graph = read_graph(config_data["expected-graph"])
     path_to_actual = tmp_path / "actual_graph.dot"
     write_labeled_two_cycles_graph_to_dot(
         config_data["cycle-sizes"], config_data["labels"], path_to_actual

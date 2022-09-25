@@ -4,12 +4,8 @@
       "graph-name": "wc",
       "expected-node-count": "332",
       "expected-edge-count": "269",
-      "expected-edge-labels": [
-        "A",
-        "D"
-      ]
-    },
-    {
+      "expected-edge-labels": ["A", "D"]
+    }, {
       "graph-name": "go",
       "expected-node-count": "582929",
       "expected-edge-count": "1437437",
@@ -66,14 +62,8 @@
   ],
   "test_write_labeled_two_cycles_graph_to_dot": [
     {
-      "cycle-sizes": [
-        1,
-        2
-      ],
-      "labels": [
-        "A",
-        "B"
-      ],
+      "cycle-sizes": [1, 2],
+      "labels": ["A", "B"],
       "expected-graph": "digraph  {0;1;2;3; 0 -> 1 [label=A]; 1 -> 0 [label=A]; 0 -> 2 [label=A]; 2 -> 3 [label=B]; 3 -> 0 [label=B]}"
     }
   ]

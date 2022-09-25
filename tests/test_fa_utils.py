@@ -1,3 +1,4 @@
+from project.fa_utils import intersect_nfas
 from project.fa_utils import regex_to_minimal_dfa
 from tests.utils import assert_equivalent_fas
 from tests.utils import assert_isomorphic_fa_to_graph
@@ -17,3 +18,11 @@ def test_graph_to_nfa(config_data: dict):
     expected_nfa_graph = read_graph(config_data["expected-nfa-graph"])
     actual_nfa = read_nfa(config_data["nfa"])  # uses graph_to_nfa
     assert_isomorphic_fa_to_graph(actual_nfa, expected_nfa_graph)
+
+
+def test_intersect_nfas(config_data: dict):
+    expected_nfa = read_nfa(config_data["intersection-nfa"])
+    actual_nfa = intersect_nfas(
+        read_nfa(config_data["nfa1"]), read_nfa(config_data["nfa2"])
+    )
+    assert_equivalent_fas(actual_nfa, expected_nfa)

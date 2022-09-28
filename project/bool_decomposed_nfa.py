@@ -3,9 +3,7 @@ from typing import Dict
 from typing import Set
 from typing import Tuple
 
-from pyformlang.finite_automaton import NondeterministicFiniteAutomaton as NFA
-from pyformlang.finite_automaton import State
-from pyformlang.finite_automaton import Symbol
+import pyformlang.finite_automaton
 
 from project.bool_decomposition import BoolDecomposition
 
@@ -13,17 +11,11 @@ __all__ = ["BoolDecomposedNFA"]
 
 
 class BoolDecomposedNFA:
-    state_count: int
-    idx_to_state: Callable[[int], State]
-    adj_bool_decomposition: BoolDecomposition[Symbol]
-    start_state_indices: Set[int]
-    final_state_indices: Set[int]
-
     def __init__(
         self,
         state_count: int,
-        idx_to_state: Callable[[int], State],
-        adj_bool_decomposition: BoolDecomposition[Symbol],
+        idx_to_state: Callable[[int], pyformlang.finite_automaton.State],
+        adj_bool_decomposition: BoolDecomposition[pyformlang.finite_automaton.Symbol],
         start_state_indices: Set[int],
         final_state_indices: Set[int],
     ):
@@ -34,14 +26,16 @@ class BoolDecomposedNFA:
         self.final_state_indices = final_state_indices
 
     @staticmethod
-    def from_nfa(nfa: NFA) -> "BoolDecomposedNFA":
-        idx_to_state_dict: Dict[int, State] = dict()
-        state_to_idx_dict: Dict[State, int] = dict()
+    def from_nfa(
+        nfa: pyformlang.finite_automaton.NondeterministicFiniteAutomaton,
+    ) -> "BoolDecomposedNFA":
+        idx_to_state_dict: Dict[int, pyformlang.finite_automaton.State] = dict()
+        state_to_idx_dict: Dict[pyformlang.finite_automaton.State, int] = dict()
         for (idx, state) in enumerate(nfa.states):
             idx_to_state_dict[idx] = state
             state_to_idx_dict[state] = idx
         adj_bool_decomposition = BoolDecomposition(
-            len(nfa.states),
+            (len(nfa.states), len(nfa.states)),
             content=(
                 (state_to_idx_dict[source], state_to_idx_dict[target], symbol)
                 for (source, symbol, target) in nfa
@@ -59,8 +53,8 @@ class BoolDecomposedNFA:
             ),
         )
 
-    def to_nfa(self) -> NFA:
-        nfa = NFA()
+    def to_nfa(self) -> pyformlang.finite_automaton.NondeterministicFiniteAutomaton:
+        nfa = pyformlang.finite_automaton.NondeterministicFiniteAutomaton()
         for idx in self.start_state_indices:
             nfa.add_start_state(self.idx_to_state(idx))
         for idx in self.final_state_indices:
@@ -74,7 +68,7 @@ class BoolDecomposedNFA:
     def intersect(self, other: "BoolDecomposedNFA") -> "BoolDecomposedNFA":
         return BoolDecomposedNFA(
             state_count=self.state_count * other.state_count,
-            idx_to_state=lambda i: State(
+            idx_to_state=lambda i: pyformlang.finite_automaton.State(
                 (
                     self.idx_to_state(i // other.state_count),
                     (other.idx_to_state(i % other.state_count)),
@@ -95,7 +89,11 @@ class BoolDecomposedNFA:
             ),
         )
 
-    def get_reachable(self) -> Set[Tuple[State, State]]:
+    def get_reachable(
+        self,
+    ) -> Set[
+        Tuple[pyformlang.finite_automaton.State, pyformlang.finite_automaton.State]
+    ]:
         return set(
             (self.idx_to_state(source), self.idx_to_state(target))
             for (source, target) in (

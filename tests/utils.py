@@ -1,7 +1,6 @@
 import networkx as nx
 import pydot
-from pyformlang.finite_automaton import FiniteAutomaton as FA
-from pyformlang.finite_automaton import NondeterministicFiniteAutomaton as NFA
+import pyformlang.finite_automaton
 
 from project.fa_utils import graph_to_nfa
 
@@ -18,7 +17,7 @@ def read_graph(dot_data: str) -> nx.DiGraph:
     return nx.nx_pydot.from_pydot(pydot.graph_from_dot_data(dot_data)[0])
 
 
-def read_nfa(data: dict) -> NFA:
+def read_nfa(data: dict) -> pyformlang.finite_automaton.NondeterministicFiniteAutomaton:
     return graph_to_nfa(
         graph=read_graph(data["graph"]),
         start_states=set(data["start-states"]) if "start-states" in data else None,
@@ -26,7 +25,10 @@ def read_nfa(data: dict) -> NFA:
     )
 
 
-def assert_equivalent_fas(actual_fa: FA, expected_fa: FA):
+def assert_equivalent_fas(
+    actual_fa: pyformlang.finite_automaton.FiniteAutomaton,
+    expected_fa: pyformlang.finite_automaton.FiniteAutomaton,
+):
     # empty DFA-s are equivalent but `is_equivalent_to` throws on empty DFA-s
     if len(actual_fa.states) == 0 or len(expected_fa.states) == 0:
         assert (
@@ -37,7 +39,9 @@ def assert_equivalent_fas(actual_fa: FA, expected_fa: FA):
         assert actual_fa.is_equivalent_to(expected_fa)
 
 
-def _fa_to_networkx_without_extra_starting_nodes(fa: FA) -> nx.DiGraph:
+def _fa_to_networkx_without_extra_starting_nodes(
+    fa: pyformlang.finite_automaton.FiniteAutomaton,
+) -> nx.DiGraph:
     fa_graph = fa.to_networkx()
     for node in list(fa_graph.nodes):
         if isinstance(node, str) and node.endswith("_starting"):
@@ -45,7 +49,9 @@ def _fa_to_networkx_without_extra_starting_nodes(fa: FA) -> nx.DiGraph:
     return fa_graph
 
 
-def assert_isomorphic_fa_to_graph(actual_fa: FA, expected_fa_graph):
+def assert_isomorphic_fa_to_graph(
+    actual_fa: pyformlang.finite_automaton.FiniteAutomaton, expected_fa_graph
+):
     actual_fa_graph = _fa_to_networkx_without_extra_starting_nodes(actual_fa)
     # here `node_match` ignores `key` attribute
     assert nx.is_isomorphic(
@@ -57,7 +63,10 @@ def assert_isomorphic_fa_to_graph(actual_fa: FA, expected_fa_graph):
     )
 
 
-def assert_isomorphic_fas(actual_fa: FA, expected_fa: FA):
+def assert_isomorphic_fas(
+    actual_fa: pyformlang.finite_automaton.FiniteAutomaton,
+    expected_fa: pyformlang.finite_automaton.FiniteAutomaton,
+):
     assert_isomorphic_fa_to_graph(
         actual_fa, _fa_to_networkx_without_extra_starting_nodes(expected_fa)
     )

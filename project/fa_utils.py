@@ -1,38 +1,54 @@
 from typing import Iterable
 
 import networkx as nx
-from pyformlang.finite_automaton import DeterministicFiniteAutomaton as DFA
-from pyformlang.finite_automaton import NondeterministicFiniteAutomaton as NFA
-from pyformlang.finite_automaton import State
-from pyformlang.finite_automaton import Symbol
-from pyformlang.regular_expression import Regex
+import pyformlang.finite_automaton
+import pyformlang.regular_expression
 
-__all__ = ["graph_to_nfa", "regex_to_minimal_dfa"]
+from project.bool_decomposed_nfa import BoolDecomposedNFA
+
+__all__ = ["graph_to_nfa", "regex_to_minimal_dfa", "intersect_nfas"]
 
 
-def regex_to_minimal_dfa(regex_str: str) -> DFA:
-    return Regex(regex_str).to_epsilon_nfa().minimize()
+def regex_to_minimal_dfa(
+    regex_str: str,
+) -> pyformlang.finite_automaton.DeterministicFiniteAutomaton:
+    return pyformlang.regular_expression.Regex(regex_str).to_epsilon_nfa().minimize()
 
 
 def graph_to_nfa(
     graph: nx.DiGraph,
     start_states: Iterable[int] = None,
     final_states: Iterable[int] = None,
-) -> NFA:
-    all_states = set(State(node) for node in graph.nodes)
-    nfa = NFA(
+) -> pyformlang.finite_automaton.NondeterministicFiniteAutomaton:
+    all_states = set(pyformlang.finite_automaton.State(node) for node in graph.nodes)
+    nfa = pyformlang.finite_automaton.NondeterministicFiniteAutomaton(
         states=all_states,
-        start_state=set(State(node) for node in start_states)
+        start_state=set(
+            pyformlang.finite_automaton.State(node) for node in start_states
+        )
         if start_states
         else all_states,
-        final_states=set(State(node) for node in final_states)
+        final_states=set(
+            pyformlang.finite_automaton.State(node) for node in final_states
+        )
         if final_states
         else all_states,
     )
     for (source, target, attributes) in graph.edges.data():
         nfa.add_transition(
-            State(source),
-            Symbol(attributes["label"]),
-            State(target),
+            pyformlang.finite_automaton.State(source),
+            pyformlang.finite_automaton.Symbol(attributes["label"]),
+            pyformlang.finite_automaton.State(target),
         )
     return nfa
+
+
+def intersect_nfas(
+    nfa1: pyformlang.finite_automaton.NondeterministicFiniteAutomaton,
+    nfa2: pyformlang.finite_automaton.NondeterministicFiniteAutomaton,
+) -> pyformlang.finite_automaton.NondeterministicFiniteAutomaton:
+    return (
+        BoolDecomposedNFA.from_nfa(nfa1)
+        .intersect(BoolDecomposedNFA.from_nfa(nfa2))
+        .to_nfa()
+    )

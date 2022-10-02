@@ -1,0 +1,38 @@
+[
+  {
+    "regex": "a b",
+    "expected-dfa": {
+      "graph": "digraph {0;1;2; 0 -> 1 [label=a]; 1 -> 2 [label=b]}",
+      "start-states": ["0"],
+      "final-states": ["2"]
+    }
+  }, {
+  "regex": "a|b",
+  "expected-dfa": {
+    "graph": "digraph {0;1; 0 -> 1 [label=a]; 0 -> 1 [label=b]}",
+    "start-states": ["0"],
+    "final-states": ["1"]
+  }
+}, {
+  "regex": "a*",
+  "expected-dfa": {
+    "graph": "digraph {0; 0 -> 0 [label=a];}"
+  }
+}, {
+  "regex": "$",
+  "expected-dfa": {
+    "graph": "digraph {0;}"
+  }
+}, {
+  "regex": "",
+  "expected-dfa": {
+    "graph": "digraph {}"
+  }
+}, {
+  "regex": "a (b+b.c)*|$",
+  "expected-dfa": {
+    "graph": "digraph {0;1;2; 0 -> 1 [label=a]; 1 -> 2 [label=b]; 2 -> 2 [label=b]; 2 -> 1 [label=c];}",
+    "start-states": ["0"]
+  }
+}
+]

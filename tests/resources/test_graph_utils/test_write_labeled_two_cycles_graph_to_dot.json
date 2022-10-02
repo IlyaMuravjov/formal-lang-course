@@ -1,0 +1,7 @@
+[
+  {
+    "cycle-sizes": [1, 2],
+    "labels": ["A", "B"],
+    "expected-graph": "digraph  {0;1;2;3; 0 -> 1 [label=A]; 1 -> 0 [label=A]; 0 -> 2 [label=A]; 2 -> 3 [label=B]; 3 -> 0 [label=B]}"
+  }
+]

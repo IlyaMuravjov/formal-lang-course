@@ -1,0 +1,27 @@
+[
+  {
+    "nfa": {
+      "graph": "digraph {}"
+    },
+    "expected-nfa-graph": "digraph  {}"
+  }, {
+  "nfa": {
+    "graph": "digraph {0;1;2; 0 -> 1 [label=a]; 1 -> 2 [label=b]}",
+    "start-states": ["0"],
+    "final-states": ["2"]
+  },
+  "expected-nfa-graph": "digraph  {0 [is_final=False, is_start=True];1 [is_final=False, is_start=False];2 [is_final=True, is_start=False];0 -> 1  [label=a];1 -> 2  [label=b];}"
+}, {
+  "nfa": {
+    "graph": "digraph {0;1;2; 0 -> 1 [label=a]; 1 -> 2 [label=b]; 2 -> 2 [label=b]; 2 -> 1 [label=c];}",
+    "start-states": ["0"]
+  },
+  "expected-nfa-graph": "digraph  {0 [is_final=True, is_start=True];1 [is_final=True, is_start=False];2 [is_final=True, is_start=False];0 -> 1  [label=a];1 -> 2  [label=b];2 -> 2  [label=b];2 -> 1  [label=c];}"
+}, {
+  "nfa": {
+    "graph": "digraph  {1;0;2;3;1 -> 0  [label=A];0 -> 1  [label=A];0 -> 2  [label=B];2 -> 3  [label=B];3 -> 0  [label=B];}",
+    "final-states": ["0"]
+  },
+  "expected-nfa-graph": "digraph  {1 [is_final=False, is_start=True];3 [is_final=False, is_start=True];0 [is_final=True, is_start=True];2 [is_final=False, is_start=True];1 -> 0  [label=A];3 -> 0  [label=B];0 -> 1  [label=A];0 -> 2  [label=B];2 -> 3  [label=B];}"
+}
+]

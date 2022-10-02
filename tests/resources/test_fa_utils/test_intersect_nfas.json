@@ -1,0 +1,201 @@
+[
+  {
+    "nfa1": {
+      "graph": "digraph {}"
+    },
+    "nfa2": {
+      "graph": "digraph {}"
+    },
+    "intersection-nfa": {
+      "graph": "digraph {}"
+    }
+  }, {
+  "nfa1": {
+    "graph": "digraph {}"
+  },
+  "nfa2": {
+    "graph": "digraph {0;}"
+  },
+  "intersection-nfa": {
+    "graph": "digraph {}"
+  }
+}, {
+  "nfa1": {
+    "graph": "digraph {0;}"
+  },
+  "nfa2": {
+    "graph": "digraph {}"
+  },
+  "intersection-nfa": {
+    "graph": "digraph {}"
+  }
+}, {
+  "nfa1": {
+    "graph": "digraph {0;}"
+  },
+  "nfa2": {
+    "graph": "digraph {0;}"
+  },
+  "intersection-nfa": {
+    "graph": "digraph {0;}"
+  }
+}, {
+  "nfa1": {
+    "graph": "digraph {0;}",
+    "start-states": []
+  },
+  "nfa2": {
+    "graph": "digraph {0;}",
+    "final-states": []
+  },
+  "intersection-nfa": {
+    "graph": "digraph {0;}",
+    "start-states": [],
+    "final-states": []
+  }
+}, {
+  "nfa1": {
+    "graph": "digraph {0;}",
+    "final-states": []
+  },
+  "nfa2": {
+    "graph": "digraph {0;}",
+    "start-states": []
+  },
+  "intersection-nfa": {
+    "graph": "digraph {0;}",
+    "start-states": [],
+    "final-states": []
+  }
+}, {
+  "nfa1": {
+    "graph": "digraph {0;1; 0 -> 1 [label=a];}"
+  },
+  "nfa2": {
+    "graph": "digraph {0; 0 -> 0 [label=a];}"
+  },
+  "intersection-nfa": {
+    "graph": "digraph {0; 0 -> 1 [label=a];}"
+  }
+}, {
+  "nfa1": {
+    "graph": "digraph {0;1; 0 -> 1 [label=a];}"
+  },
+  "nfa2": {
+    "graph": "digraph {0;}"
+  },
+  "intersection-nfa": {
+    "graph": "digraph {0;}"
+  }
+}, {
+  "nfa1": {
+    "graph": "digraph {0;1; 0 -> 1 [label=a];}"
+  },
+  "nfa2": {
+    "graph": "digraph {0; 0 -> 0 [label=b];}"
+  },
+  "intersection-nfa": {
+    "graph": "digraph {0;}"
+  }
+}, {
+  "nfa1": {
+    "graph": "digraph {0;1; 0 -> 1 [label=a];}"
+  },
+  "nfa2": {
+    "graph": "digraph {0; 0 -> 0 [label=a];}"
+  },
+  "intersection-nfa": {
+    "graph": "digraph {0;1; 0 -> 1 [label=a];}"
+  }
+}, {
+  "nfa1": {
+    "graph": "digraph {0;1; 0 -> 1 [label=a];}",
+    "start-states": ["0"],
+    "final-states": ["1"]
+  },
+  "nfa2": {
+    "graph": "digraph {0;}"
+  },
+  "intersection-nfa": {
+    "graph": "digraph {}"
+  }
+}, {
+  "nfa1": {
+    "graph": "digraph {0;1; 0 -> 1 [label=a];}",
+    "start-states": ["0"],
+    "final-states": ["1"]
+  },
+  "nfa2": {
+    "graph": "digraph {0; 0 -> 0 [label=a];}"
+  },
+  "intersection-nfa": {
+    "graph": "digraph {0;1; 0 -> 1 [label=a];}",
+    "start-states": ["0"],
+    "final-states": ["1"]
+  }
+}, {
+  "nfa1": {
+    "graph": "digraph {0;1;2; 0 -> 1 [label=a]; 1 -> 2 [label=a]; 2 -> 0 [label=a];}",
+    "start-states": ["0"],
+    "final-states": ["0"]
+  },
+  "nfa2": {
+    "graph": "digraph {0;1; 0 -> 1 [label=a]; 1 -> 0 [label=a];}",
+    "start-states": ["0"],
+    "final-states": ["0"]
+  },
+  "intersection-nfa": {
+    "graph": "digraph {0;1;2;3;4;5; 0 -> 1 [label=a]; 1 -> 2 [label=a]; 2 -> 3 [label=a]; 3 -> 4 [label=a]; 4 -> 5 [label=a]; 5 -> 0 [label=a];}",
+    "start-states": ["0"],
+    "final-states": ["0"]
+  }
+}, {
+  "nfa1": {
+    "graph": "digraph {0;1;2;3;4; 0 -> 1 [label=a]; 1 -> 2 [label=a]; 2 -> 0 [label=a]; 0 -> 3 [label=a]; 3 -> 4 [label=a]; 4 -> 0 [label=a]}",
+    "start-states": ["0"],
+    "final-states": ["0"]
+  },
+  "nfa2": {
+    "graph": "digraph {0;1;2; 0 -> 1 [label=a]; 1 -> 0 [label=a]; 0 -> 2 [label=a]; 2 -> 0 [label=a];}",
+    "start-states": ["0"],
+    "final-states": ["0"]
+  },
+  "intersection-nfa": {
+    "graph": "digraph {0;1;2;3;4;5; 0 -> 1 [label=a]; 1 -> 2 [label=a]; 2 -> 3 [label=a]; 3 -> 4 [label=a]; 4 -> 5 [label=a]; 5 -> 0 [label=a];}",
+    "start-states": ["0"],
+    "final-states": ["0"]
+  }
+}, {
+  "nfa1": {
+    "graph": "digraph {0;1;2;3;4; 0 -> 1 [label=a]; 1 -> 2 [label=a]; 2 -> 0 [label=a]; 0 -> 3 [label=a]; 3 -> 4 [label=a]; 4 -> 0 [label=b]}",
+    "start-states": ["0"],
+    "final-states": ["0"]
+  },
+  "nfa2": {
+    "graph": "digraph {0;1;2; 0 -> 1 [label=a]; 1 -> 0 [label=a]; 0 -> 2 [label=a]; 2 -> 0 [label=b];}",
+    "start-states": ["0"],
+    "final-states": ["0"]
+  },
+  "intersection-nfa": {
+    "graph": "digraph {0;1;2;3;4;5; 0 -> 1 [label=a]; 1 -> 2 [label=a]; 2 -> 3 [label=a]; 3 -> 4 [label=a]; 4 -> 5 [label=a]; 5 -> 0 [label=a]; 5 -> 0 [label=b];}",
+    "start-states": ["0"],
+    "final-states": ["0"]
+  }
+}, {
+  "nfa1": {
+    "graph": "digraph {0;1;2;3;4; 0 -> 1 [label=a]; 1 -> 2 [label=a]; 2 -> 0 [label=a]; 0 -> 3 [label=b]; 3 -> 4 [label=b]; 4 -> 0 [label=b]}",
+    "start-states": ["0"],
+    "final-states": ["0"]
+  },
+  "nfa2": {
+    "graph": "digraph {0;1;2; 0 -> 1 [label=a]; 1 -> 0 [label=a]; 0 -> 2 [label=b]; 2 -> 0 [label=b];}",
+    "start-states": ["0"],
+    "final-states": ["0"]
+  },
+  "intersection-nfa": {
+    "graph": "digraph {0;1;2;3;4;5;6;7;8;9;10; 0 -> 1 [label=a]; 1 -> 2 [label=a]; 2 -> 3 [label=a]; 3 -> 4 [label=a]; 4 -> 5 [label=a]; 5 -> 0 [label=a]; 0 -> 6 [label=b]; 6 -> 7 [label=b]; 7 -> 8 [label=b]; 8 -> 9 [label=b]; 9 -> 10 [label=b]; 10 -> 0 [label=b];}",
+    "start-states": ["0"],
+    "final-states": ["0"]
+  }
+}
+]

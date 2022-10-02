@@ -48,5 +48,10 @@
   "graph": "digraph {0;1;2;3; 0 -> 1 [label=a]; 1 -> 2 [label=a]; 2 -> 0 [label=a]}",
   "final-states": ["0"],
   "expected-result": [["0", "0"], ["1", "0"], ["2", "0"]]
+}, {
+  "regex": "a a a",
+  "graph": "digraph {0;1; 0 -> 1 [label=a]; 0 -> 2 [label=a]; 1 -> 0 [label=a]}",
+  "start-states": ["0"],
+  "expected-result": [["0", "1"], ["0", "2"]]
 }
 ]

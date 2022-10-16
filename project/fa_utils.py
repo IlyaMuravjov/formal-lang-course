@@ -5,7 +5,7 @@ import pyformlang
 import pyformlang.finite_automaton
 import pyformlang.regular_expression
 
-from project.bool_decomposed_nfa import BoolDecomposedNFA
+from project.pygraphblas_bool_decomposed_nfa import BoolDecomposedNFA
 
 __all__ = ["graph_to_nfa", "regex_to_minimal_dfa", "intersect_nfas"]
 
@@ -45,10 +45,11 @@ def graph_to_nfa(
 def intersect_nfas(
     nfa1: pyformlang.finite_automaton.NondeterministicFiniteAutomaton,
     nfa2: pyformlang.finite_automaton.NondeterministicFiniteAutomaton,
+    bool_decomposed_nfa_cls=BoolDecomposedNFA,
 ) -> pyformlang.finite_automaton.NondeterministicFiniteAutomaton:
     return (
-        BoolDecomposedNFA.from_nfa(nfa1)
-        .intersect(BoolDecomposedNFA.from_nfa(nfa2))
+        bool_decomposed_nfa_cls.from_nfa(nfa1)
+        .intersect(bool_decomposed_nfa_cls.from_nfa(nfa2))
         .to_nfa()
     )
 

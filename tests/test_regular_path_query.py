@@ -9,7 +9,10 @@ import importlib
 
 @pytest.mark.parametrize(
     "bool_decomposed_nfa_module",
-    ["project.scipy_bool_decomposed_nfa", "project.pygraphblas_bool_decomposed_nfa"],
+    [
+        "project.scipy_sparse_bool_decomposed_nfa",
+        "project.pygraphblas_bool_decomposed_nfa",
+    ],
 )
 def test_regular_path_query_all_pairs(
     config_data: dict, bool_decomposed_nfa_module: str
@@ -31,7 +34,10 @@ def test_regular_path_query_all_pairs(
 
 @pytest.mark.parametrize(
     "bool_decomposed_nfa_module",
-    ["project.scipy_bool_decomposed_nfa", "project.pygraphblas_bool_decomposed_nfa"],
+    [
+        "project.scipy_sparse_bool_decomposed_nfa",
+        "project.pygraphblas_bool_decomposed_nfa",
+    ],
 )
 def test_regular_path_query_multiple_source(
     config_data: dict, bool_decomposed_nfa_module: str

@@ -5,7 +5,7 @@ import pyformlang
 import pyformlang.finite_automaton
 import pyformlang.regular_expression
 
-from project.pygraphblas_bool_decomposed_nfa import BoolDecomposedNFA
+from project.scipy_sparse_bool_decomposed_nfa import BoolDecomposedNFA
 
 __all__ = ["graph_to_nfa", "regex_to_minimal_dfa", "intersect_nfas"]
 

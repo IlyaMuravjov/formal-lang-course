@@ -7,7 +7,7 @@ from typing import Union
 import pyformlang.finite_automaton
 import scipy
 
-from project.scipy_bool_decomposition import BoolDecomposition
+from project.scipy_sparse_bool_decomposition import BoolDecomposition
 
 __all__ = ["BoolDecomposedNFA"]
 

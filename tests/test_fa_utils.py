@@ -25,7 +25,10 @@ def test_graph_to_nfa(config_data: dict):
 
 @pytest.mark.parametrize(
     "bool_decomposed_nfa_module",
-    ["project.scipy_bool_decomposed_nfa", "project.pygraphblas_bool_decomposed_nfa"],
+    [
+        "project.scipy_sparse_bool_decomposed_nfa",
+        "project.pygraphblas_bool_decomposed_nfa",
+    ],
 )
 def test_intersect_nfas(config_data: dict, bool_decomposed_nfa_module: str):
     expected_nfa = read_nfa(config_data["intersection-nfa"])

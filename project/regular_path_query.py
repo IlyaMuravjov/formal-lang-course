@@ -6,7 +6,7 @@ from typing import Union
 
 import networkx as nx
 
-from project.bool_decomposed_nfa import BoolDecomposedNFA
+from project.scipy_sparse_bool_decomposed_nfa import BoolDecomposedNFA
 from project.fa_utils import graph_to_nfa
 from project.fa_utils import regex_to_minimal_dfa
 
@@ -18,13 +18,14 @@ def regular_path_query_all_pairs(
     graph: nx.DiGraph,
     start_states: Iterable[int] = None,
     final_states: Iterable[int] = None,
+    bool_decomposed_nfa_cls=BoolDecomposedNFA,
 ) -> Set[Tuple[int, int]]:
     return set(
         (s1.value[0].value, s2.value[0].value)
-        for (s1, s2) in BoolDecomposedNFA.from_nfa(
+        for (s1, s2) in bool_decomposed_nfa_cls.from_nfa(
             graph_to_nfa(graph, start_states, final_states)
         )
-        .intersect(BoolDecomposedNFA.from_nfa(regex_to_minimal_dfa(regex)))
+        .intersect(bool_decomposed_nfa_cls.from_nfa(regex_to_minimal_dfa(regex)))
         .get_reachable()
     )
 
@@ -35,11 +36,12 @@ def regular_path_query_multiple_source(
     start_states: Iterable[int] = None,
     final_states: Iterable[int] = None,
     group_by_start: bool = False,
+    bool_decomposed_nfa_cls=BoolDecomposedNFA,
 ) -> Union[Set[int], Dict[int, Set[int]]]:
-    result = BoolDecomposedNFA.from_nfa(
+    result = bool_decomposed_nfa_cls.from_nfa(
         graph_to_nfa(graph, start_states, final_states)
     ).sync_bfs(
-        BoolDecomposedNFA.from_nfa(regex_to_minimal_dfa(regex)),
+        bool_decomposed_nfa_cls.from_nfa(regex_to_minimal_dfa(regex)),
         group_by_start=group_by_start,
     )
     return (

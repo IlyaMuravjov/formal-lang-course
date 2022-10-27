@@ -8,12 +8,11 @@ from project.graph_utils import write_labeled_two_cycles_graph_to_dot
 from tests.utils import read_graph
 
 
-@pytest.mark.skip(reason="cfpq_data fails to download graph by name")
 def test_get_graph_data(config_data):
     expected_graph_data = GraphData(
         node_count=int(config_data["expected-node-count"]),
         edge_count=int(config_data["expected-edge-count"]),
-        edge_labels=set(config_data["expected-edge-labels"]),
+        label_occurrences=config_data["expected-edge-labels"],
     )
     actual_graph_data = get_graph_data(config_data["graph-name"])
     assert actual_graph_data == expected_graph_data
@@ -25,7 +24,9 @@ def test_get_graph_data_on_unknown_graph():
 
 
 def test_to_graph_data_on_empty_graph():
-    expected_graph_data = GraphData(node_count=0, edge_count=0, edge_labels=set())
+    expected_graph_data = GraphData(
+        node_count=0, edge_count=0, label_occurrences=dict()
+    )
     actual_graph_data = to_graph_data(nx.empty_graph())
     assert expected_graph_data == actual_graph_data
 

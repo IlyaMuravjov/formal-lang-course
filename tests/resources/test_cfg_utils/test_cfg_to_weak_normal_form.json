@@ -1,0 +1,89 @@
+[
+  {
+    "cfg": {},
+    "expected-result": {}
+  }, {
+  "cfg": {
+    "start": "S"
+  },
+  "expected-result": {
+    "start": "S"
+  }
+}, {
+  "cfg": {
+    "productions": "S -> a b"
+  },
+  "expected-result": {}
+}, {
+  "cfg": {
+    "start": "S",
+    "productions": "S -> a b"
+  },
+  "expected-result": {
+    "start": "S",
+    "productions": "S -> \"VAR:a#CNF#\" \"VAR:b#CNF#\" \n \"VAR:a#CNF#\" -> a \n \"VAR:b#CNF#\" -> b"
+  }
+}, {
+  "cfg": {
+    "start": "S",
+    "productions": "S -> A \n A -> a"
+  },
+  "expected-result": {
+    "start": "S",
+    "productions": "S -> a"
+  }
+}, {
+  "cfg": {
+    "start": "S",
+    "productions": "S -> B \n B -> B"
+  },
+  "expected-result": {
+    "start": "S"
+  }
+}, {
+  "cfg": {
+    "start": "S",
+    "productions": "S -> A b A \n A -> a | epsilon"
+  },
+  "expected-result": {
+    "start": "S",
+    "productions": "S -> A C#CNF#1 \n C#CNF#1 -> \"VAR:b#CNF#\" A \n A -> a | epsilon \n \"VAR:b#CNF#\" -> b"
+  }
+}, {
+  "cfg": {
+    "start": "S",
+    "productions": "S -> S a S | epsilon"
+  },
+  "expected-result": {
+    "start": "S",
+    "productions": "S -> S C#CNF#1 | epsilon \n C#CNF#1 -> \"VAR:a#CNF#\" S \n \"VAR:a#CNF#\" -> a"
+  }
+}, {
+  "cfg": {
+    "start": "A",
+    "productions": "A -> B \n B -> C \n C -> D \n D -> a"
+  },
+  "expected-result": {
+    "start": "A",
+    "productions": "A -> a"
+  }
+}, {
+  "cfg": {
+    "start": "CFG#EpsilonPlaceholder",
+    "productions": "CFG#EpsilonPlaceholder -> A CFG#EpsilonPlaceholder_ \n A -> a | epsilon \n CFG#EpsilonPlaceholder_ -> b"
+  },
+  "expected-result": {
+    "start": "CFG#EpsilonPlaceholder",
+    "productions": "CFG#EpsilonPlaceholder -> A CFG#EpsilonPlaceholder_ \n A -> a | epsilon \n CFG#EpsilonPlaceholder_ -> b"
+  }
+}, {
+  "cfg": {
+    "start": "S",
+    "productions": "S -> X | a b c d \n X -> a A \n A -> B | C | D \n B -> B \n C -> C c \n D -> a S | epsilon \n E -> e"
+  },
+  "expected-result": {
+    "start": "S",
+    "productions": "S -> \"VAR:a#CNF#\" A | \"VAR:a#CNF#\" C#CNF#1 \n A -> \"VAR:a#CNF#\" S | epsilon \n C#CNF#1 -> \"VAR:b#CNF#\" C#CNF#2 \n C#CNF#2 -> \"VAR:c#CNF#\" \"VAR:d#CNF#\" \n \"VAR:a#CNF#\" -> a \n \"VAR:b#CNF#\" -> b \n \"VAR:c#CNF#\" -> c \n \"VAR:d#CNF#\" -> d"
+  }
+}
+]

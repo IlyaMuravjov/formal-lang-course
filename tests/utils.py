@@ -1,6 +1,6 @@
 import networkx as nx
 import pydot
-import pyformlang.finite_automaton
+import pyformlang
 
 from project.fa_utils import graph_to_nfa
 
@@ -70,3 +70,11 @@ def assert_isomorphic_fas(
     assert_isomorphic_fa_to_graph(
         actual_fa, _fa_to_networkx_without_extra_starting_nodes(expected_fa)
     )
+
+
+def assert_equal_cfgs(
+    actual_cfg: pyformlang.cfg.CFG,
+    expected_cfg: pyformlang.cfg.CFG,
+):
+    assert actual_cfg.start_symbol == expected_cfg.start_symbol
+    assert actual_cfg.productions == expected_cfg.productions

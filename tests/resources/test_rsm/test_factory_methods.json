@@ -1,0 +1,82 @@
+[
+  {
+    "ecfg": {},
+    "rsm": {}
+  }, {
+  "ecfg": {
+    "start": "S"
+  },
+  "rsm": {
+    "start": "S"
+  }
+}, {
+  "ecfg": {
+    "productions": {
+      "S": "a b"
+    }
+  },
+  "rsm": {
+    "boxes": {
+      "S": {
+        "graph": "digraph {0;1;2; 0 -> 1 [label=a]; 1 -> 2 [label=b]}",
+        "start-states": ["0"],
+        "final-states": ["2"]
+      }
+    }
+  }
+}, {
+  "ecfg": {
+    "start": "S",
+    "productions": {
+      "S": "a A b|$",
+      "A": "a|S $"
+    }
+  },
+  "rsm": {
+    "start": "S",
+    "boxes": {
+      "S": {
+        "graph": "digraph {0;1;2;3; 0 -> 1 [label=a]; 1 -> 2 [label=A]; 2 -> 3 [label=b]}",
+        "start-states": ["0"],
+        "final-states": ["0", "3"]
+      },
+      "A": {
+        "graph": "digraph {0;1; 0 -> 1 [label=a]; 0 -> 1 [label=S]}",
+        "start-states": ["0"],
+        "final-states": ["1"]
+      }
+    }
+  }
+}, {
+  "ecfg": {
+    "start": "S",
+    "productions": {
+      "S": "a (b+b.c)*|$"
+    }
+  },
+  "rsm": {
+    "start": "S",
+    "boxes": {
+      "S": {
+        "graph": "digraph {0;1;2; 0 -> 1 [label=a]; 1 -> 2 [label=b]; 2 -> 2 [label=b]; 2 -> 1 [label=c];}",
+        "start-states": ["0"]
+      }
+    }
+  }
+}, {
+  "ecfg": {
+    "start": "S",
+    "productions": {
+      "S": ""
+    }
+  },
+  "rsm": {
+    "start": "S",
+    "boxes": {
+      "S": {
+        "graph": "digraph {}"
+      }
+    }
+  }
+}
+]

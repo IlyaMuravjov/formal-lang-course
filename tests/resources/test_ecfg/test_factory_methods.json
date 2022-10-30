@@ -1,0 +1,56 @@
+[
+  {
+    "cfg": {},
+    "ecfg": {}
+  }, {
+  "cfg": {
+    "start": "S"
+  },
+  "ecfg": {
+    "start": "S"
+  }
+}, {
+  "cfg": {
+    "productions": "S -> a b"
+  },
+  "ecfg": {
+    "productions": {
+      "S": "a b"
+    }
+  }
+}, {
+  "cfg": {
+    "start": "S",
+    "productions": "S -> a b\nS -> a"
+  },
+  "ecfg": {
+    "start": "S",
+    "productions": {
+      "S": "a b|a"
+    }
+  }
+}, {
+  "cfg": {
+    "start": "S",
+    "productions": "S -> a S b | epsilon"
+  },
+  "ecfg": {
+    "start": "S",
+    "productions": {
+      "S": "a S b|$"
+    }
+  }
+}, {
+  "cfg": {
+    "start": "S",
+    "productions": "S -> a A b | epsilon\n A -> a \n A -> S epsilon"
+  },
+  "ecfg": {
+    "start": "S",
+    "productions": {
+      "S": "a A b|$",
+      "A": "a|S $"
+    }
+  }
+}
+]

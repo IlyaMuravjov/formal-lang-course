@@ -3,7 +3,7 @@ from os import PathLike
 
 import pyformlang.cfg
 
-__all__ = ["cfg_to_weak_normal_form", "json_to_cfg", "read_cfg"]
+__all__ = ["cfg_to_weak_normal_form", "cfg_from_data", "read_cfg"]
 
 
 def cfg_to_weak_normal_form(cfg: pyformlang.cfg.CFG) -> pyformlang.cfg.CFG:
@@ -47,7 +47,7 @@ def cfg_to_weak_normal_form(cfg: pyformlang.cfg.CFG) -> pyformlang.cfg.CFG:
     )
 
 
-def json_to_cfg(data: dict) -> pyformlang.cfg.CFG:
+def cfg_from_data(data: dict) -> pyformlang.cfg.CFG:
     return pyformlang.cfg.CFG.from_text(
         start_symbol=pyformlang.cfg.Variable(
             data["start"] if "start" in data else None
@@ -58,4 +58,4 @@ def json_to_cfg(data: dict) -> pyformlang.cfg.CFG:
 
 def read_cfg(path: PathLike) -> pyformlang.cfg.CFG:
     with open(path, "r") as fs:
-        return json_to_cfg(json.load(fs))
+        return cfg_from_data(json.load(fs))

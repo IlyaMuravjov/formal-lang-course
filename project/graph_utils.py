@@ -13,6 +13,8 @@ __all__ = [
     "write_labeled_two_cycles_graph_to_dot",
 ]
 
+import pydot
+
 
 @dataclass
 class GraphData:
@@ -55,3 +57,7 @@ def _write_graph_to_dot(graph: nx.Graph, path: Path):
     with open(path, "w") as file:
         # removing "\n"-s because otherwise `read_dot` creates node called "\n"
         file.write(nx.drawing.nx_pydot.to_pydot(graph).to_string().replace("\n", ""))
+
+
+def graph_from_data(dot_data: str) -> nx.DiGraph:
+    return nx.nx_pydot.from_pydot(pydot.graph_from_dot_data(dot_data)[0])

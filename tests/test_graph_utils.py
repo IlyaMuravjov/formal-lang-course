@@ -5,7 +5,7 @@ from project.graph_utils import GraphData
 from project.graph_utils import get_graph_data
 from project.graph_utils import to_graph_data
 from project.graph_utils import write_labeled_two_cycles_graph_to_dot
-from tests.utils import read_graph
+from project.graph_utils import graph_from_data
 
 
 @pytest.mark.skip(reason="cfpq_data fails to download graph by name")
@@ -31,7 +31,7 @@ def test_to_graph_data_on_empty_graph():
 
 
 def test_write_labeled_two_cycles_graph_to_dot(config_data, tmp_path):
-    expected_graph = read_graph(config_data["expected-graph"])
+    expected_graph = graph_from_data(config_data["expected-graph"])
     path_to_actual = tmp_path / "actual_graph.dot"
     write_labeled_two_cycles_graph_to_dot(
         config_data["cycle-sizes"], config_data["labels"], path_to_actual

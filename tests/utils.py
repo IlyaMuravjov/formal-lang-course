@@ -1,28 +1,11 @@
 import networkx as nx
-import pydot
 import pyformlang
 
-from project.fa_utils import graph_to_nfa
-
 __all__ = [
-    "read_graph",
-    "read_nfa",
     "assert_equivalent_fas",
     "assert_isomorphic_fa_to_graph",
     "assert_isomorphic_fas",
 ]
-
-
-def read_graph(dot_data: str) -> nx.DiGraph:
-    return nx.nx_pydot.from_pydot(pydot.graph_from_dot_data(dot_data)[0])
-
-
-def read_nfa(data: dict) -> pyformlang.finite_automaton.NondeterministicFiniteAutomaton:
-    return graph_to_nfa(
-        graph=read_graph(data["graph"]),
-        start_states=set(data["start-states"]) if "start-states" in data else None,
-        final_states=set(data["final-states"]) if "final-states" in data else None,
-    )
 
 
 def assert_equivalent_fas(

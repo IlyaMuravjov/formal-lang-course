@@ -4,7 +4,7 @@ import pyformlang.cfg
 import pytest
 
 from project.cfg_utils import cfg_to_weak_normal_form
-from project.cfg_utils import json_to_cfg
+from project.cfg_utils import cfg_from_data
 from project.cfg_utils import read_cfg
 from tests.utils import assert_equal_cfgs
 
@@ -66,6 +66,6 @@ def test_read_cfg(input: str, expected_output: pyformlang.cfg.CFG, tmp_path: Pat
 
 def test_cfg_to_weak_normal_form(config_data: dict):
     assert_equal_cfgs(
-        cfg_to_weak_normal_form(json_to_cfg(config_data["cfg"])),
-        json_to_cfg(config_data["expected-result"]),
+        cfg_to_weak_normal_form(cfg_from_data(config_data["cfg"])),
+        cfg_from_data(config_data["expected-result"]),
     )

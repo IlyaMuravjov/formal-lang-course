@@ -1,10 +1,16 @@
 import networkx as nx
 import pyformlang
 
+from project.ecfg import ECFG
+from project.rsm import RSM
+
 __all__ = [
     "assert_equivalent_fas",
     "assert_isomorphic_fa_to_graph",
     "assert_isomorphic_fas",
+    "assert_equivalent_regexes",
+    "assert_definitely_equivalent_ecfgs",
+    "assert_definitely_equivalent_rsms",
 ]
 
 
@@ -61,3 +67,26 @@ def assert_equal_cfgs(
 ):
     assert actual_cfg.start_symbol == expected_cfg.start_symbol
     assert actual_cfg.productions == expected_cfg.productions
+
+
+def assert_equivalent_regexes(
+    actual_regex: pyformlang.regular_expression.Regex,
+    expected_regex: pyformlang.regular_expression.Regex,
+):
+    assert_equivalent_fas(
+        actual_regex.to_epsilon_nfa(), expected_regex.to_epsilon_nfa()
+    )
+
+
+def assert_definitely_equivalent_ecfgs(actual_ecfg: ECFG, expected_ecfg: ECFG):
+    assert actual_ecfg.start_symbol == expected_ecfg.start_symbol
+    assert len(actual_ecfg.productions) == len(expected_ecfg.productions)
+    for variable, regex in expected_ecfg.productions.items():
+        assert_equivalent_regexes(actual_ecfg.productions[variable], regex)
+
+
+def assert_definitely_equivalent_rsms(actual_rsm: RSM, expected_rsm: RSM):
+    assert actual_rsm.start_symbol == expected_rsm.start_symbol
+    assert len(actual_rsm.boxes) == len(expected_rsm.boxes)
+    for variable, fa in expected_rsm.boxes.items():
+        assert_equivalent_fas(actual_rsm.boxes[variable], fa)

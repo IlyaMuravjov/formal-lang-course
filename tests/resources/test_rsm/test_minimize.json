@@ -1,0 +1,104 @@
+[
+  {
+    "rsm": {},
+    "minimized-rsm": {}
+  }, {
+  "rsm": {
+    "start": "S"
+  },
+  "minimized-rsm": {
+    "start": "S"
+  }
+}, {
+  "rsm": {
+    "boxes": {
+      "S": {
+        "graph": "digraph {}"
+      }
+    }
+  },
+  "minimized-rsm": {
+    "boxes": {
+      "S": {
+        "graph": "digraph {}"
+      }
+    }
+  }
+}, {
+  "rsm": {
+    "boxes": {
+      "S": {
+        "graph": "digraph {0;1; 0 -> 1 [label=a]}",
+        "start-states": []
+      }
+    }
+  },
+  "minimized-rsm": {
+    "boxes": {
+      "S": {
+        "graph": "digraph {}"
+      }
+    }
+  }
+}, {
+  "rsm": {
+    "boxes": {
+      "S": {
+        "graph": "digraph {0;1; 0 -> 1 [label=a]}",
+        "final-states": []
+      }
+    }
+  },
+  "minimized-rsm": {
+    "boxes": {
+      "S": {
+        "graph": "digraph {}"
+      }
+    }
+  }
+}, {
+  "rsm": {
+    "boxes": {
+      "S": {
+        "graph": "digraph {0;1;2;3; 0 -> 1 [label=a]; 0 -> 2 [label=S]; 1 -> 3 [label=b]; 2 -> 3 [label=b]}",
+        "start-states": ["0"],
+        "final-states": ["3"]
+      }
+    }
+  },
+  "minimized-rsm": {
+    "boxes": {
+      "S": {
+        "graph": "digraph {0;1;2; 0 -> 1 [label=a]; 0 -> 1 [label=S]; 1 -> 2 [label=b];}",
+        "start-states": ["0"],
+        "final-states": ["2"]
+      }
+    }
+  }
+}, {
+  "rsm": {
+    "boxes": {
+      "S": {
+        "graph": "digraph {0;1;2;3; 0 -> 1 [label=a]; 0 -> 2 [label=A]; 1 -> 3 [label=b]; 2 -> 3 [label=b]}",
+        "start-states": ["0"],
+        "final-states": ["3"]
+      },
+      "A": {
+        "graph": "digraph {0;}"
+      }
+    }
+  },
+  "minimized-rsm": {
+    "boxes": {
+      "S": {
+        "graph": "digraph {0;1;2; 0 -> 1 [label=a]; 0 -> 1 [label=A]; 1 -> 2 [label=b];}",
+        "start-states": ["0"],
+        "final-states": ["2"]
+      },
+      "A": {
+        "graph": "digraph {0;}"
+      }
+    }
+  }
+}
+]

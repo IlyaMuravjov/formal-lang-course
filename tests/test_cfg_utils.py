@@ -5,6 +5,7 @@ import pytest
 
 from project.cfg_utils import cfg_to_weak_normal_form
 from project.cfg_utils import cfg_from_data
+from project.cfg_utils import is_generated_by_cfg
 from project.cfg_utils import read_cfg
 from tests.utils import assert_equal_cfgs
 
@@ -68,4 +69,11 @@ def test_cfg_to_weak_normal_form(config_data: dict):
     assert_equal_cfgs(
         cfg_to_weak_normal_form(cfg_from_data(config_data["cfg"])),
         cfg_from_data(config_data["expected-result"]),
+    )
+
+
+def test_is_generated_by_cfg(config_data: dict):
+    assert (
+        is_generated_by_cfg(cfg_from_data(config_data["cfg"]), config_data["word"])
+        == config_data["is_generated"]
     )

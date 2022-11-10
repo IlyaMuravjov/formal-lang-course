@@ -1,0 +1,128 @@
+[
+  {
+    "cfg": {},
+    "word": "",
+    "is_generated": false
+  }, {
+  "cfg": {},
+  "word": "word",
+  "is_generated": false
+}, {
+  "cfg": {
+    "start": "S"
+  },
+  "word": "",
+  "is_generated": false
+}, {
+  "cfg": {
+    "start": "S"
+  },
+  "word": "word",
+  "is_generated": false
+}, {
+  "cfg": {
+    "start": "S",
+    "productions": "S -> epsilon"
+  },
+  "word": "",
+  "is_generated": true
+}, {
+  "cfg": {
+    "start": "S",
+    "productions": "S -> epsilon"
+  },
+  "word": "word",
+  "is_generated": false
+}, {
+  "cfg": {
+    "start": "S",
+    "productions": "S -> w o r d"
+  },
+  "word": "",
+  "is_generated": false
+}, {
+  "cfg": {
+    "start": "S",
+    "productions": "S -> w o r d"
+  },
+  "word": "word",
+  "is_generated": true
+}, {
+  "cfg": {
+    "start": "S",
+    "productions": "S -> w o r d"
+  },
+  "word": "word2",
+  "is_generated": false
+}, {
+  "cfg": {
+    "start": "S",
+    "productions": "S -> A B | C D \n A -> a A | epsilon \n B -> b B c | epsilon \n C -> a C b | epsilon \n D -> c D | epsilon"
+  },
+  "word": "",
+  "is_generated": true
+}, {
+  "cfg": {
+    "start": "S",
+    "productions": "S -> A B | C D \n A -> a A | epsilon \n B -> b B c | epsilon \n C -> a C b | epsilon \n D -> c D | epsilon"
+  },
+  "word": "aabbcccc",
+  "is_generated": true
+}, {
+  "cfg": {
+    "start": "S",
+    "productions": "S -> A B | C D \n A -> a A | epsilon \n B -> b B c | epsilon \n C -> a C b | epsilon \n D -> c D | epsilon"
+  },
+  "word": "bbbccc",
+  "is_generated": true
+}, {
+  "cfg": {
+    "start": "S",
+    "productions": "S -> A B | C D \n A -> a A | epsilon \n B -> b B c | epsilon \n C -> a C b | epsilon \n D -> c D | epsilon"
+  },
+  "word": "abc",
+  "is_generated": true
+}, {
+  "cfg": {
+    "start": "S",
+    "productions": "S -> A B | C D \n A -> a A | epsilon \n B -> b B c | epsilon \n C -> a C b | epsilon \n D -> c D | epsilon"
+  },
+  "word": "abb",
+  "is_generated": false
+}, {
+  "cfg": {
+    "start": "S",
+    "productions": "S -> A B | C D \n A -> a A | epsilon \n B -> b B c | epsilon \n C -> a C b | epsilon \n D -> c D | epsilon"
+  },
+  "word": "abbccc",
+  "is_generated": false
+}, {
+  "cfg": {
+    "start": "S",
+    "productions": "S -> ( S ) S | [ S ] S | epsilon"
+  },
+  "word": "",
+  "is_generated": true
+}, {
+  "cfg": {
+    "start": "S",
+    "productions": "S -> ( S ) S | [ S ] S | epsilon"
+  },
+  "word": "[([])[]()]",
+  "is_generated": true
+}, {
+  "cfg": {
+    "start": "S",
+    "productions": "S -> ( S ) S | [ S ] S | epsilon"
+  },
+  "word": "[([])[]()",
+  "is_generated": false
+}, {
+  "cfg": {
+    "start": "S",
+    "productions": "S -> ( S ) S | [ S ] S | epsilon"
+  },
+  "word": "[([])[])]",
+  "is_generated": false
+}
+]

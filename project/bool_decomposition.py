@@ -1,4 +1,4 @@
-from typing import Dict
+from collections import defaultdict
 from typing import Generic
 from typing import Iterable
 from typing import Iterator
@@ -16,7 +16,7 @@ class BoolDecomposition(Generic[T]):
     def __init__(
         self, shape: Tuple[int, int], content: Iterable[Tuple[int, int, T]] = None
     ):
-        self.matrices = dict()
+        self.matrices = defaultdict(lambda: scipy.sparse.csr_matrix(shape))
         self.shape = shape
         dok_matrices = dict()
         if content:
@@ -35,6 +35,15 @@ class BoolDecomposition(Generic[T]):
             for (element, matrix) in self.matrices.items()
             for (i, j) in (zip(*matrix.nonzero()))
         )
+
+    def __getitem__(self, element: T) -> scipy.sparse.csr_matrix:
+        return self.matrices[element]
+
+    def __setitem__(self, element: T, matrix: scipy.sparse.csr_matrix):
+        self.matrices[element] = matrix
+
+    def count_nonzero(self) -> int:
+        return sum(matrix.count_nonzero() for matrix in self.matrices.values())
 
     def kron(self, other: "BoolDecomposition[T]") -> "BoolDecomposition[T]":
         result = BoolDecomposition(

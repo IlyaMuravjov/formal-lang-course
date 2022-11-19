@@ -26,7 +26,8 @@
 }, {
   "regex": "",
   "expected-dfa": {
-    "graph": "digraph {}"
+    "graph": "digraph {0;}",
+    "final-states": []
   }
 }, {
   "regex": "a (b+b.c)*|$",

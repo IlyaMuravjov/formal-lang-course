@@ -20,7 +20,8 @@
   "minimized-rsm": {
     "boxes": {
       "S": {
-        "graph": "digraph {}"
+        "graph": "digraph {0;}",
+        "final-states": []
       }
     }
   }
@@ -36,7 +37,8 @@
   "minimized-rsm": {
     "boxes": {
       "S": {
-        "graph": "digraph {}"
+        "graph": "digraph {0;}",
+        "final-states": []
       }
     }
   }
@@ -52,7 +54,8 @@
   "minimized-rsm": {
     "boxes": {
       "S": {
-        "graph": "digraph {}"
+        "graph": "digraph {0;}",
+        "final-states": []
       }
     }
   }

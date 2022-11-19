@@ -11,6 +11,7 @@ __all__ = [
     "get_graph_data",
     "to_graph_data",
     "write_labeled_two_cycles_graph_to_dot",
+    "graph_from_data",
 ]
 
 import pydot

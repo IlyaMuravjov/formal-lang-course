@@ -1,6 +1,7 @@
 from project.cfg_utils import cfg_from_data
 from project.context_free_path_query import filtered_cfpq_with_hellings
 from project.context_free_path_query import filtered_cfpq_with_matrix
+from project.context_free_path_query import filtered_cfpq_with_tensor
 from project.graph_utils import graph_from_data
 
 
@@ -23,3 +24,7 @@ def test_filtered_cfpq_with_hellings(config_data: dict):
 
 def test_filtered_cfpq_with_matrix(config_data: dict):
     _test_filtered_cfpq_impl(filtered_cfpq_with_matrix, config_data)
+
+
+def test_filtered_cfpq_with_tensor(config_data: dict):
+    _test_filtered_cfpq_impl(filtered_cfpq_with_tensor, config_data)

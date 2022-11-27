@@ -13,6 +13,10 @@ def pytest_generate_tests(metafunc):
         / test_file_path.with_suffix("").name
         / metafunc.function.__name__
     ).with_suffix(".json")
+    if not test_config.exists():
+        test_config = (
+            test_file_path.parent / "resources" / test_file_path.with_suffix("").name
+        ).with_suffix(".json")
     test_config_content = json.loads(test_config.read_text())
     if not isinstance(test_config_content, list):
         raise Exception(

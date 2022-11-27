@@ -9,11 +9,20 @@ import itertools
 
 import pyformlang
 import networkx as nx
+import scipy
 
+from project.bool_decomposed_nfa import BoolDecomposedNFA
 from project.bool_decomposition import BoolDecomposition
 from project.cfg_utils import cfg_to_weak_normal_form
+from project.ecfg import ECFG
+from project.fa_utils import graph_to_nfa
+from project.rsm import RSM
 
-__all__ = ["filtered_cfpq_with_hellings", "filtered_cfpq_with_matrix"]
+__all__ = [
+    "filtered_cfpq_with_hellings",
+    "filtered_cfpq_with_matrix",
+    "filtered_cfpq_with_tensor",
+]
 
 
 def _filter_cfpq_result(
@@ -160,4 +169,62 @@ def filtered_cfpq_with_matrix(
 ) -> Set[Tuple[int, int]]:
     return _filter_cfpq_result(
         _cfpq_with_matrix(cfg, graph), cfg, start_nodes, final_nodes
+    )
+
+
+def _cfpq_with_tensor(
+    cfg: pyformlang.cfg.CFG, graph: nx.DiGraph
+) -> Set[Tuple[int, pyformlang.cfg.Variable, int]]:
+    bool_decomposed_rsm = BoolDecomposedNFA.from_nfa(
+        RSM.from_ecfg(ECFG.from_cfg(cfg)).minimize().merge_boxes_to_single_nfa()
+    )
+    bool_decomposed_graph = BoolDecomposedNFA.from_nfa(graph_to_nfa(graph))
+    identity_matrix = scipy.sparse.eye(bool_decomposed_graph.state_count, format="csr")
+    for var in cfg.get_nullable_symbols():
+        bool_decomposed_graph.adj_bool_decomposition[
+            pyformlang.finite_automaton.Symbol(var.value)
+        ] += identity_matrix
+    last_transitive_closure_len = 0
+    while True:
+        transitive_closure = bool_decomposed_rsm.intersect(
+            bool_decomposed_graph
+        ).get_reachable()
+        if len(transitive_closure) == last_transitive_closure_len:
+            break
+        last_transitive_closure_len = len(transitive_closure)
+        added_transitions: Dict[
+            pyformlang.finite_automaton.Symbol, scipy.sparse.dok_matrix
+        ] = defaultdict(
+            lambda: scipy.sparse.dok_matrix(
+                (bool_decomposed_graph.state_count, bool_decomposed_graph.state_count),
+                dtype=bool,
+            )
+        )
+        for (start, finish) in transitive_closure:
+            start_rsm_state, start_graph_state = start.value
+            start_var, _ = start_rsm_state.value
+            finish_rsm_state, finish_graph_state = finish.value
+            finish_var, _ = finish_rsm_state.value
+            assert start_var == finish_var
+            added_transitions[pyformlang.finite_automaton.Symbol(start_var.value)][
+                bool_decomposed_graph.state_to_idx(start_graph_state),
+                bool_decomposed_graph.state_to_idx(finish_graph_state),
+            ] = True
+        for (symbol, matrix) in added_transitions.items():
+            bool_decomposed_graph.adj_bool_decomposition[symbol] += matrix
+    return {
+        (start.value, pyformlang.cfg.Variable(symbol.value), finish.value)
+        for start, symbol, finish in bool_decomposed_graph
+        if pyformlang.cfg.Variable(symbol.value) in cfg.variables
+    }
+
+
+def filtered_cfpq_with_tensor(
+    cfg: pyformlang.cfg.CFG,
+    graph: nx.DiGraph,
+    start_nodes: Set[int] = None,
+    final_nodes: Set[int] = None,
+) -> Set[Tuple[int, int]]:
+    return _filter_cfpq_result(
+        _cfpq_with_tensor(cfg, graph), cfg, start_nodes, final_nodes
     )

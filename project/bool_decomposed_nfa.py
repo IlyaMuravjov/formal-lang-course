@@ -1,5 +1,6 @@
 from typing import Callable
 from typing import Dict
+from typing import Iterator
 from typing import Set
 from typing import Tuple
 from typing import Union
@@ -17,12 +18,14 @@ class BoolDecomposedNFA:
         self,
         state_count: int,
         idx_to_state: Callable[[int], pyformlang.finite_automaton.State],
+        state_to_idx: Callable[[pyformlang.finite_automaton.State], int],
         adj_bool_decomposition: BoolDecomposition[pyformlang.finite_automaton.Symbol],
         start_state_indices: Set[int],
         final_state_indices: Set[int],
     ):
         self.state_count = state_count
         self.idx_to_state = idx_to_state
+        self.state_to_idx = state_to_idx
         self.adj_bool_decomposition = adj_bool_decomposition
         self.start_state_indices = start_state_indices
         self.final_state_indices = final_state_indices
@@ -46,6 +49,7 @@ class BoolDecomposedNFA:
         return BoolDecomposedNFA(
             state_count=len(nfa.states),
             idx_to_state=idx_to_state_dict.__getitem__,
+            state_to_idx=state_to_idx_dict.__getitem__,
             adj_bool_decomposition=adj_bool_decomposition,
             start_state_indices=set(
                 state_to_idx_dict[state] for state in nfa.start_states
@@ -53,6 +57,20 @@ class BoolDecomposedNFA:
             final_state_indices=set(
                 state_to_idx_dict[state] for state in nfa.final_states
             ),
+        )
+
+    def __iter__(
+        self,
+    ) -> Iterator[
+        Tuple[
+            pyformlang.finite_automaton.State,
+            pyformlang.finite_automaton.Symbol,
+            pyformlang.finite_automaton.State,
+        ]
+    ]:
+        return (
+            (self.idx_to_state(start_idx), symbol, self.idx_to_state(finish_idx))
+            for (start_idx, finish_idx, symbol) in self.adj_bool_decomposition
         )
 
     def to_nfa(self) -> pyformlang.finite_automaton.NondeterministicFiniteAutomaton:
@@ -76,6 +94,9 @@ class BoolDecomposedNFA:
                     (other.idx_to_state(i % other.state_count)),
                 )
             ),
+            state_to_idx=lambda state: self.state_to_idx(state.value[0])
+            * other.state_count
+            + other.state_to_idx(state.value[1]),
             adj_bool_decomposition=self.adj_bool_decomposition.kron(
                 other.adj_bool_decomposition
             ),

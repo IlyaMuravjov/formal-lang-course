@@ -22,6 +22,7 @@ __all__ = [
     "filtered_cfpq_with_hellings",
     "filtered_cfpq_with_matrix",
     "filtered_cfpq_with_tensor",
+    "cfpq_with_tensor",
 ]
 
 
@@ -172,7 +173,7 @@ def filtered_cfpq_with_matrix(
     )
 
 
-def _cfpq_with_tensor(
+def cfpq_with_tensor(
     cfg: pyformlang.cfg.CFG, graph: nx.DiGraph
 ) -> Set[Tuple[int, pyformlang.cfg.Variable, int]]:
     bool_decomposed_rsm = BoolDecomposedNFA.from_nfa(
@@ -226,5 +227,5 @@ def filtered_cfpq_with_tensor(
     final_nodes: Set[int] = None,
 ) -> Set[Tuple[int, int]]:
     return _filter_cfpq_result(
-        _cfpq_with_tensor(cfg, graph), cfg, start_nodes, final_nodes
+        cfpq_with_tensor(cfg, graph), cfg, start_nodes, final_nodes
     )

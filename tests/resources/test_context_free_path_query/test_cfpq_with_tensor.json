@@ -5,114 +5,69 @@
     "expected-result": []
   },
   {
-    "cfg": {
-      "start": "S",
-      "productions": "S -> epsilon"
-    },
-    "graph": "digraph {}",
-    "expected-result": []
-  },
-  {
     "cfg": {},
     "graph": "digraph {0;}",
     "expected-result": []
   },
   {
     "cfg": {
-      "start": "S",
-      "productions": "S -> epsilon"
-    },
-    "graph": "digraph {0;}",
-    "start-nodes": [],
-    "expected-result": []
-  },
-  {
-    "cfg": {
-      "start": "S",
-      "productions": "S -> epsilon"
-    },
-    "graph": "digraph {0;}",
-    "final-nodes": [],
-    "expected-result": []
-  },
-  {
-    "cfg": {
-      "start": "S",
       "productions": "S -> epsilon"
     },
     "graph": "digraph {0;}",
     "expected-result": [
-      ["0", "0"]
+      ["0", "S", "0"]
     ]
   },
   {
     "cfg": {
-      "start": "S",
       "productions": "S -> epsilon"
     },
     "graph": "digraph {0;1;2;}",
     "expected-result": [
-      ["0", "0"],
-      ["1", "1"],
-      ["2", "2"]
-    ]
-  },
-   {
-    "cfg": {
-      "start": "S",
-      "productions": "S -> epsilon"
-    },
-    "graph": "digraph {0;1;2;}",
-    "start-nodes": ["0", "1"],
-    "final-nodes": ["1", "2"],
-    "expected-result": [
-      ["1", "1"]
+      ["0", "S", "0"],
+      ["1", "S", "1"],
+      ["2", "S", "2"]
     ]
   },
   {
     "cfg": {
-      "start": "S",
       "productions": "S -> a"
     },
     "graph": "digraph {0;1;2; 0 -> 1 [label=a]}",
     "expected-result": [
-      ["0", "1"]
+      ["0", "S", "1"]
     ]
   },
   {
     "cfg": {
-      "start": "S",
       "productions": "S -> a b"
     },
     "graph": "digraph {0;1;2; 0 -> 1 [label=a]; 1 -> 2 [label=b]}",
     "expected-result": [
-      ["0", "2"]
+      ["0", "S", "2"]
     ]
   },
   {
     "cfg": {
-      "start": "S",
       "productions": "S -> a b c"
     },
     "graph": "digraph {0;1;2; 0 -> 1 [label=a]; 1 -> 2 [label=b]; 2 -> 0 [label=c]}",
     "expected-result": [
-      ["0", "0"]
+      ["0", "S", "0"]
     ]
   },
   {
     "cfg": {
-      "start": "S",
       "productions": "S -> a b c | b c"
     },
     "graph": "digraph {0;1;2; 0 -> 1 [label=a]; 1 -> 2 [label=b]; 2 -> 0 [label=c]}",
     "expected-result": [
-      ["0", "0"],
-      ["1", "0"]
+      ["0", "S", "0"],
+      ["1", "S", "0"]
     ]
   },
   {
     "cfg": {
-      "start": "S",
       "productions": "S -> S"
     },
     "graph": "digraph {0;1;2; 0 -> 1 [label=a]; 1 -> 2 [label=a]}",
@@ -120,26 +75,16 @@
   },
   {
     "cfg": {
-      "start": "S",
-      "productions": "S -> S a | a"
+      "productions": "S -> S a | a \n A -> a A | a"
     },
     "graph": "digraph {0;1;2; 0 -> 1 [label=a]; 1 -> 2 [label=a]}",
     "expected-result": [
-      ["0", "1"],
-      ["0", "2"],
-      ["1", "2"]
-    ]
-  },
-  {
-    "cfg": {
-      "start": "S",
-      "productions": "S -> S a | a"
-    },
-    "graph": "digraph {0;1;2; 0 -> 1 [label=a]; 1 -> 2 [label=a]}",
-    "expected-result": [
-      ["0", "1"],
-      ["0", "2"],
-      ["1", "2"]
+      ["0", "S", "1"],
+      ["0", "S", "2"],
+      ["1", "S", "2"],
+      ["0", "A", "1"],
+      ["0", "A", "2"],
+      ["1", "A", "2"]
     ]
   },
   {
@@ -149,46 +94,78 @@
     },
     "graph": "digraph {0;1;2; 0 -> 1 [label=a]; 1 -> 2 [label=a]}",
     "expected-result": [
-      ["0", "1"],
-      ["0", "2"],
-      ["1", "2"]
+      ["0", "A", "1"],
+      ["0", "A", "2"],
+      ["1", "A", "2"]
     ]
   },
   {
     "cfg": {
-      "start": "S",
       "productions": "S -> A B | C D \n A -> a A | epsilon \n B -> b B c | epsilon \n C -> a C b | epsilon \n D -> c D | epsilon"
     },
     "graph": "digraph {0;1;2;3;4; 0 -> 1 [label=a]; 1 -> 2 [label=a]; 1 -> 2 [label=b]; 2 -> 3 [label=b]; 3 -> 4 [label=c]; 4 -> 3 [label=c]}",
     "expected-result": [
-      ["0", "0"],
-      ["0", "1"],
-      ["0", "2"],
-      ["0", "3"],
-      ["0", "4"],
-      ["1", "1"],
-      ["1", "2"],
-      ["1", "3"],
-      ["1", "4"],
-      ["2", "2"],
-      ["2", "4"],
-      ["3", "3"],
-      ["3", "4"],
-      ["4", "3"],
-      ["4", "4"]
+      ["0", "S", "0"],
+      ["0", "S", "1"],
+      ["0", "S", "2"],
+      ["0", "S", "3"],
+      ["0", "S", "4"],
+      ["1", "S", "1"],
+      ["1", "S", "2"],
+      ["1", "S", "3"],
+      ["1", "S", "4"],
+      ["2", "S", "2"],
+      ["2", "S", "4"],
+      ["3", "S", "3"],
+      ["3", "S", "4"],
+      ["4", "S", "3"],
+      ["4", "S", "4"],
+      ["0", "A", "1"],
+      ["0", "A", "2"],
+      ["1", "A", "2"],
+      ["1", "B", "3"],
+      ["2", "B", "4"],
+      ["0", "C", "2"],
+      ["1", "C", "3"],
+      ["3", "D", "4"],
+      ["4", "D", "3"],
+      ["0", "A", "0"],
+      ["0", "B", "0"],
+      ["0", "C", "0"],
+      ["0", "D", "0"],
+      ["1", "A", "1"],
+      ["1", "B", "1"],
+      ["1", "C", "1"],
+      ["1", "D", "1"],
+      ["2", "A", "2"],
+      ["2", "B", "2"],
+      ["2", "C", "2"],
+      ["2", "D", "2"],
+      ["3", "A", "3"],
+      ["3", "B", "3"],
+      ["3", "C", "3"],
+      ["3", "D", "3"],
+      ["4", "A", "4"],
+      ["4", "B", "4"],
+      ["4", "C", "4"],
+      ["4", "D", "4"]
     ]
   },
   {
     "cfg": {
-      "start": "S",
       "productions": "S -> a S b | epsilon"
     },
     "graph": "digraph {0;1;2;3; 0 -> 1 [label=a]; 1 -> 0 [label=a]; 0 -> 2 [label=b]; 2 -> 3 [label=b]; 3 -> 0 [label=b]}",
-    "start-nodes": ["0"],
     "expected-result": [
-      ["0", "0"],
-      ["0", "2"],
-      ["0", "3"]
+      ["0", "S", "0"],
+      ["0", "S", "2"],
+      ["0", "S", "3"],
+      ["1", "S", "0"],
+      ["1", "S", "1"],
+      ["1", "S", "2"],
+      ["1", "S", "3"],
+      ["2", "S", "2"],
+      ["3", "S", "3"]
     ]
   },
   {
@@ -197,10 +174,15 @@
       "productions": "S -> a S b | epsilon"
     },
     "graph": "digraph {0;1;2;3;4; 0 -> 1 [label=a]; 1 -> 0 [label=a]; 0 -> 2 [label=b]; 2 -> 3 [label=b]; 3 -> 4 [label=b]; 4 -> 0 [label=b]}",
-    "start-nodes": ["0"],
     "expected-result": [
-      ["0", "0"],
-      ["0", "3"]
+      ["0", "S", "0"],
+      ["0", "S", "3"],
+      ["1", "S", "2"],
+      ["1", "S", "4"],
+      ["1", "S", "1"],
+      ["2", "S", "2"],
+      ["3", "S", "3"],
+      ["4", "S", "4"]
     ]
   }
 ]

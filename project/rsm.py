@@ -20,6 +20,25 @@ class RSM:
             minimized_rsm.boxes[var] = fa.minimize()
         return minimized_rsm
 
+    def merge_boxes_to_single_nfa(self) -> pyformlang.finite_automaton.EpsilonNFA:
+        result = pyformlang.finite_automaton.EpsilonNFA()
+        for var, fa in self.boxes.items():
+            for state in fa.start_states:
+                result.add_start_state(
+                    pyformlang.finite_automaton.State((var, state.value))
+                )
+            for state in fa.final_states:
+                result.add_final_state(
+                    pyformlang.finite_automaton.State((var, state.value))
+                )
+            for (start, symbol, finish) in fa:
+                result.add_transition(
+                    pyformlang.finite_automaton.State((var, start)),
+                    symbol,
+                    pyformlang.finite_automaton.State((var, finish)),
+                )
+        return result
+
     @staticmethod
     def from_ecfg(ecfg: ECFG) -> "RSM":
         return RSM(

@@ -4,6 +4,7 @@ from typing import Dict
 from typing import List
 from typing import Set
 from typing import Tuple
+from typing import Union
 
 import pyformlang.cfg
 
@@ -57,7 +58,7 @@ def cfg_to_weak_normal_form(cfg: pyformlang.cfg.CFG) -> pyformlang.cfg.CFG:
 
 
 def is_generated_by_cfg(
-    cfg: pyformlang.cfg.CFG, word: List[pyformlang.cfg.Terminal] | str
+    cfg: pyformlang.cfg.CFG, word: Union[List[pyformlang.cfg.Terminal], str]
 ) -> bool:
     if isinstance(word, str):
         word = [pyformlang.cfg.Terminal(ch) for ch in word]
@@ -70,17 +71,17 @@ def is_generated_by_cfg(
     variable_productions: List[Tuple[int, int, int]] = []
     for production in cfg.productions:
         head_idx = var_to_idx[production.head]
-        match len(production.body):
-            case 1:
-                terminal_productions.setdefault(head_idx, set()).add(production.body[0])
-            case 2:
-                variable_productions.append(
-                    (
-                        head_idx,
-                        var_to_idx[production.body[0]],
-                        var_to_idx[production.body[1]],
-                    )
+        if len(production.body) == 1:
+            terminal_productions.setdefault(head_idx, set()).add(production.body[0])
+        else:
+            assert len(production.body) == 2
+            variable_productions.append(
+                (
+                    head_idx,
+                    var_to_idx[production.body[0]],
+                    var_to_idx[production.body[1]],
                 )
+            )
     is_generated = [
         [
             [

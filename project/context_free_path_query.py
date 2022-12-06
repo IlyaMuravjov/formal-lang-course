@@ -77,15 +77,27 @@ def _cfpq_with_hellings(
         edges_grouped_by_label[attributes["label"]].append((start, finish))
 
     for production in cfg.productions:
-        match production.body:
-            case [] | [pyformlang.cfg.Epsilon()]:
-                for node in graph.nodes:
-                    register_reachability(node, production.head, node)
-            case [pyformlang.cfg.Terminal() as terminal]:
-                for (start, finish) in edges_grouped_by_label[terminal.value]:
-                    register_reachability(start, production.head, finish)
-            case [pyformlang.cfg.Variable() as var1, pyformlang.cfg.Variable() as var2]:
-                var_production_body_to_head[(var1, var2)].add(production.head)
+        if (
+            len(production.body) == 0
+            or len(production.body) == 1
+            and isinstance(production.body[0], pyformlang.cfg.Epsilon)
+        ):
+            for node in graph.nodes:
+                register_reachability(node, production.head, node)
+        elif len(production.body) == 1 and isinstance(
+            production.body[0], pyformlang.cfg.Terminal
+        ):
+            for (start, finish) in edges_grouped_by_label[production.body[0].value]:
+                register_reachability(start, production.head, finish)
+        else:
+            assert (
+                len(production.body) == 2
+                and isinstance(production.body[0], pyformlang.cfg.Variable)
+                and isinstance(production.body[1], pyformlang.cfg.Variable)
+            )
+            var_production_body_to_head[(production.body[0], production.body[1])].add(
+                production.head
+            )
 
     while unhandled:
         (node1, var1, node2) = unhandled.popleft()
@@ -125,13 +137,27 @@ def _cfpq_with_matrix(
         Tuple[pyformlang.cfg.Variable, pyformlang.cfg.Variable, pyformlang.cfg.Variable]
     ] = []
     for production in cfg.productions:
-        match production.body:
-            case [] | [pyformlang.cfg.Epsilon()]:
-                vars_generating_epsilon.append(production.head)
-            case [pyformlang.cfg.Terminal() as terminal]:
-                terminal_to_generating_vars[terminal.value].append(production.head)
-            case [pyformlang.cfg.Variable() as var1, pyformlang.cfg.Variable() as var2]:
-                variable_productions.append((production.head, var1, var2))
+        if (
+            len(production.body) == 0
+            or len(production.body) == 1
+            and isinstance(production.body[0], pyformlang.cfg.Epsilon)
+        ):
+            vars_generating_epsilon.append(production.head)
+        elif len(production.body) == 1 and isinstance(
+            production.body[0], pyformlang.cfg.Terminal
+        ):
+            terminal_to_generating_vars[production.body[0].value].append(
+                production.head
+            )
+        else:
+            assert (
+                len(production.body) == 2
+                and isinstance(production.body[0], pyformlang.cfg.Variable)
+                and isinstance(production.body[1], pyformlang.cfg.Variable)
+            )
+            variable_productions.append(
+                (production.head, production.body[0], production.body[1])
+            )
     node_to_idx = {node: idx for (idx, node) in enumerate(graph.nodes)}
     idx_to_node = {idx: node for (idx, node) in enumerate(graph.nodes)}
     is_reachable = BoolDecomposition(

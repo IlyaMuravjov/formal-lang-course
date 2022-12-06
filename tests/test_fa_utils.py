@@ -8,6 +8,7 @@ from project.graph_utils import graph_from_data
 from project.fa_utils import nfa_from_data
 import importlib
 
+
 def test_regex_to_minimal_dfa(config_data: dict):
     expected_dfa = nfa_from_data(config_data["expected-dfa"])
     actual_dfa = regex_to_minimal_dfa(config_data["regex"])
@@ -25,8 +26,8 @@ def test_graph_to_nfa(config_data: dict):
 @pytest.mark.parametrize(
     "bool_decomposed_nfa_module",
     [
-        "project.scipy_sparse_bool_decomposed_nfa",
-        "project.pygraphblas_bool_decomposed_nfa",
+        "project.with_scipy.bool_decomposed_nfa",
+        "project.with_pygraphblas.bool_decomposed_nfa",
     ],
 )
 def test_intersect_nfas(config_data: dict, bool_decomposed_nfa_module: str):

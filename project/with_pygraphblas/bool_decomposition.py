@@ -1,3 +1,4 @@
+from collections import defaultdict
 from typing import Generic
 from typing import Iterable
 from typing import Iterator
@@ -15,7 +16,9 @@ class BoolDecomposition(Generic[T]):
     def __init__(
         self, shape: Tuple[int, int], content: Iterable[Tuple[int, int, T]] = None
     ):
-        self.matrices = dict()
+        self.matrices = defaultdict(
+            lambda: pygraphblas.Matrix.sparse(bool, shape[0], shape[1])
+        )
         self.shape = shape
         matrices_as_nnz_rows_cols = dict()
         if content:
@@ -39,6 +42,13 @@ class BoolDecomposition(Generic[T]):
             for (i, j, v) in matrix.__iter__()
             if v
         )
+
+    def __getitem__(self, element: T) -> pygraphblas.Matrix:
+        return self.matrices[element]
+
+    def __setitem__(self, element: T, matrix: pygraphblas.Matrix):
+        matrix.nonzero()
+        self.matrices[element] = matrix
 
     def kron(self, other: "BoolDecomposition[T]") -> "BoolDecomposition[T]":
         result = BoolDecomposition(

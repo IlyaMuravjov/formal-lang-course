@@ -6,7 +6,7 @@ from typing import Union
 
 import networkx as nx
 
-from project.scipy_sparse_bool_decomposed_nfa import BoolDecomposedNFA
+from project.with_scipy.bool_decomposed_nfa import BoolDecomposedNFA
 from project.fa_utils import graph_to_nfa
 from project.fa_utils import regex_to_minimal_dfa
 

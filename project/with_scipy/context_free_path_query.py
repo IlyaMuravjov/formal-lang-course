@@ -4,6 +4,7 @@ from typing import List
 from typing import Set
 from typing import Tuple
 import itertools
+from typing import Union
 
 import pyformlang
 import networkx as nx
@@ -99,19 +100,22 @@ def filtered_cfpq_with_matrix(
 
 
 def cfpq_with_tensor(
-    cfg: pyformlang.cfg.CFG, graph: nx.DiGraph
+    cfg: Union[pyformlang.cfg.CFG, ECFG], graph: nx.DiGraph
 ) -> Set[Tuple[int, pyformlang.cfg.Variable, int]]:
     bool_decomposed_rsm = BoolDecomposedNFA.from_nfa(
-        RSM.from_ecfg(ECFG.from_cfg(cfg)).minimize().merge_boxes_to_single_nfa()
+        RSM.from_ecfg(cfg if isinstance(cfg, ECFG) else ECFG.from_cfg(cfg))
+        .minimize()
+        .merge_boxes_to_single_nfa()
     )
     bool_decomposed_graph = BoolDecomposedNFA.from_nfa(graph_to_nfa(graph))
-    identity_matrix = scipy.sparse.eye(
-        bool_decomposed_graph.state_count, dtype=bool, format="csr"
-    )
-    for var in cfg.get_nullable_symbols():
-        bool_decomposed_graph.adj_bool_decomposition[
-            pyformlang.finite_automaton.Symbol(var.value)
-        ] += identity_matrix
+    if isinstance(cfg, pyformlang.cfg.CFG):
+        identity_matrix = scipy.sparse.eye(
+            bool_decomposed_graph.state_count, dtype=bool, format="csr"
+        )
+        for var in cfg.get_nullable_symbols():
+            bool_decomposed_graph.adj_bool_decomposition[
+                pyformlang.finite_automaton.Symbol(var.value)
+            ] += identity_matrix
     last_transitive_closure_len = 0
     while True:
         transitive_closure = bool_decomposed_rsm.intersect(
@@ -148,7 +152,7 @@ def cfpq_with_tensor(
 
 
 def filtered_cfpq_with_tensor(
-    cfg: pyformlang.cfg.CFG,
+    cfg: Union[pyformlang.cfg.CFG, ECFG],
     graph: nx.DiGraph,
     start_nodes: Set[int] = None,
     final_nodes: Set[int] = None,

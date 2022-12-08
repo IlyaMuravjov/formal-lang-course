@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from typing import Dict
+from typing import Set
 
 import pyformlang.cfg
 
@@ -10,6 +11,10 @@ __all__ = ["ECFG"]
 class ECFG:
     start_symbol: pyformlang.cfg.Variable
     productions: Dict[pyformlang.cfg.Variable, pyformlang.regular_expression.Regex]
+
+    @property
+    def variables(self) -> Set[pyformlang.cfg.Variable]:
+        return set(self.productions.keys())
 
     @staticmethod
     def from_cfg(cfg: pyformlang.cfg.CFG) -> "ECFG":
@@ -44,4 +49,14 @@ class ECFG:
             }
             if "productions" in data
             else dict(),
+        )
+
+    @staticmethod
+    def from_productions(productions: Dict[str, str]):
+        return ECFG(
+            start_symbol=pyformlang.cfg.Variable("S"),
+            productions={
+                pyformlang.cfg.Variable(var): pyformlang.regular_expression.Regex(regex)
+                for var, regex in productions.items()
+            },
         )
